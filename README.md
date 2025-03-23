@@ -1,5 +1,9 @@
 # 🛠 mg_tools
+[![Pub Version](https://img.shields.io/pub/v/mg_tools.svg)](https://pub.dev/packages/mg_tools)
+![Null Safety](https://img.shields.io/badge/null_safety-%E2%9C%85-green)
+[![GitHub Stars](https://img.shields.io/github/stars/mohamadalghanem474/mg_tools?style=social)](https://github.com/mohamadalghanem474/mg_tools)
 
+---
 CLI tool to generate Dart models from `.dto.json` files using `freezed` and `json_serializable`.
 
 ---
