@@ -42,6 +42,7 @@ dependencies:
   freezed_annotation: any
   json_annotation: any
 ```
+
 Then run:
 
 ```bash
@@ -63,12 +64,12 @@ dart run mg_tools --replace
 
 ### 🎯 Generate model from a single file:
 ```bash
-dart run mg_tools path/to/user.dto.json
+dart run mg_tools user.dto.json
 ```
 
 ### 🎯 + 🔁 Replace single file if it exists:
 ```bash
-dart run mg_tools path/to/user.dto.json --replace
+dart run mg_tools user.dto.json --replace
 ```
 
 ---
