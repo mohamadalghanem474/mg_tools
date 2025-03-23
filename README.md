@@ -32,12 +32,16 @@ CLI tool to generate Dart models from `.dto.json` files using `freezed` and `jso
 
 ```yaml
 dev_dependencies:
-  mg_tools: latest
+  mg_tools: any
   build_runner: any
   freezed: any
   json_serializable: any
 ```
-
+```yaml
+dependencies:
+  freezed_annotation: any
+  json_annotation: any
+```
 Then run:
 
 ```bash
