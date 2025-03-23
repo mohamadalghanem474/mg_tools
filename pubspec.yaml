@@ -1,7 +1,7 @@
 name: mg_tools
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/mohamadalghanem474/mg_tools
 
 environment:
   sdk: ^3.6.2
