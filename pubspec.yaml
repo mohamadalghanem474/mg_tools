@@ -11,3 +11,6 @@ dependencies:
 
 dev_dependencies:
   lints: ^3.0.0
+
+executables:
+  mg_tools: mg_tools
