@@ -9,3 +9,7 @@
 ## 1.0.2
 
 - Update README.md to simplify command usage examples
+
+## 1.0.3
+
+- Update Freezed 3

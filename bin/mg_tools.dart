@@ -130,24 +130,24 @@ String _generateDartModel(
   final buffer = StringBuffer();
 
   if (isListRoot) {
-    buffer.writeln('List<$className> ${camelClass}ListFromJson(String str) =>');
+    buffer.writeln('List<$className> ${camelClass}ListFromJsonString(String str) =>');
     buffer.writeln(
         '    List<$className>.from(json.decode(str).map((x) => $className.fromJson(x)));');
     buffer.writeln();
-    buffer.writeln('String ${camelClass}ListToJson(List<$className> data) =>');
+    buffer.writeln('String ${camelClass}ListToJsonString(List<$className> data) =>');
     buffer.writeln('    json.encode(data.map((x) => x.toJson()).toList());');
     buffer.writeln();
   } else {
     buffer.writeln(
-        '$className ${camelClass}FromJson(String str) => $className.fromJson(json.decode(str));');
+        '$className ${camelClass}FromJsonString(String str) => $className.fromJson(json.decode(str));');
     buffer.writeln();
     buffer.writeln(
-        'String ${camelClass}ToJson($className data) => json.encode(data.toJson());');
+        'String ${camelClass}ToJsonString($className data) => json.encode(data.toJson());');
     buffer.writeln();
   }
 
   buffer.writeln('@freezed');
-  buffer.writeln('class $className with _\$$className {');
+  buffer.writeln('abstract class $className with _\$$className {');
   buffer.writeln('  const factory $className({');
   buffer.write(fields.toString());
   buffer.writeln('  }) = _$className;');

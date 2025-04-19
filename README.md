@@ -29,18 +29,17 @@ CLI tool to generate Dart models from `.dto.json` files using `freezed` and `jso
 
 ## 🧰 Getting started
 - Make sure you have the following dev dependencies in your `pubspec.yaml`:
-
-```yaml
-dev_dependencies:
-  mg_tools: any
-  build_runner: any
-  freezed: any
-  json_serializable: any
-```
 ```yaml
 dependencies:
-  freezed_annotation: any
-  json_annotation: any
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
+```
+```yaml
+dev_dependencies:
+  mg_tools: ^1.0.3
+  build_runner: ^2.4.15
+  freezed: ^3.0.6
+  json_serializable: ^6.9.5
 ```
 
 Then run:
