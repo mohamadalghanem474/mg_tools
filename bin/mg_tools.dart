@@ -123,8 +123,15 @@ String _generateDartModel(
     final dartType =
         _getDartType(value, key, outputDir, nestedModels, force, className);
     final variableName = ReCase(key).camelCase;
-    fields.writeln(
-        '    @JsonKey(name: "$key", includeIfNull: false) $dartType? $variableName,');
+
+    // ✅ Special handling for Lists → @Default([])
+    if (dartType.startsWith('List<')) {
+      fields.writeln(
+          '    @Default([]) @JsonKey(name: "$key", includeIfNull: false) $dartType $variableName,');
+    } else {
+      fields.writeln(
+          '    @JsonKey(name: "$key", includeIfNull: false) $dartType? $variableName,');
+}
   });
 
   final buffer = StringBuffer();
@@ -169,7 +176,6 @@ String _getDartType(
   String? parentClassName,
 ]) {
   if (value is String) {
-    // 👇 محاولة كشف التواريخ
     final parsed = DateTime.tryParse(value);
     if (parsed != null) return 'DateTime';
     return 'String';

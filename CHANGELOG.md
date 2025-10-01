@@ -13,3 +13,7 @@
 ## 1.0.3
 
 - Update Freezed 3
+
+## 1.0.4
+
+- Update List to @Default([]) 
