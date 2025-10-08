@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:recase/recase.dart';
 
+var isList = false;
 void main(List<String> arguments) async {
   final directory = Directory.current;
-  final forceOverwrite = arguments.contains('--replace');
+  final forceOverwrite = true; //arguments.contains('--replace');
   final targetFile = arguments.firstWhere(
     (arg) => arg.endsWith('.dto.json'),
     orElse: () => '',
@@ -50,6 +51,7 @@ void main(List<String> arguments) async {
         rawDecoded.first is Map<String, dynamic>) {
       decoded = Map<String, dynamic>.from(rawDecoded.first);
       isListRoot = true;
+      isList = true;
     } else {
       print('❌ Unsupported JSON structure in file: ${file.path}');
       continue;
@@ -151,16 +153,42 @@ String _generateDartModel(
 
   if (isListRoot) {
     buffer.writeln(
-      'List<$className> ${camelClass}ListFromJsonString(String str) =>',
-    );
-    buffer.writeln(
-      '    List<$className>.from(json.decode(str).map((x) => $className.fromJson(x)));',
+      '$className ${camelClass}FromJsonString(String str) => $className.fromJson(json.decode(str));',
     );
     buffer.writeln();
     buffer.writeln(
-      'String ${camelClass}ListToJsonString(List<$className> data) =>',
+      'String ${camelClass}ToJsonString($className data) => json.encode(data.toJson());',
     );
-    buffer.writeln('    json.encode(data.map((x) => x.toJson()).toList());');
+    buffer.writeln();
+    buffer.writeln('@Freezed(fromJson: false, toJson: false)');
+    buffer.writeln('abstract class $className with _\$$className {');
+    buffer.writeln(
+        '  const factory $className({@Default([]) List<${className}Item> items}) = _$className;');
+    buffer.writeln(
+        "  factory $className.fromJson(Map<String, dynamic> json) => $className(items: (json as List).map((e) => ${className}Item.fromJson(e)).toList());");
+    buffer.writeln(
+        "  List<Map<String, dynamic>> toJson() => items.map((e) => e.toJson()).toList();");
+    buffer.writeln('}');
+    buffer.writeln();
+    buffer.writeln(
+      '${className}Item ${camelClass}ItemFromJsonString(String str) => ${className}Item.fromJson(json.decode(str));',
+    );
+    buffer.writeln();
+    buffer.writeln(
+      'String ${camelClass}ItemToJsonString(${className}Item data) => json.encode(data.toJson());',
+    );
+    buffer.writeln();
+    buffer.writeln('@freezed');
+    buffer
+        .writeln('abstract class ${className}Item with _\$${className}Item {');
+    buffer.writeln('  const factory ${className}Item({');
+    buffer.write(fields.toString());
+    buffer.writeln('  }) = _${className}Item;');
+    buffer.writeln();
+    buffer.writeln(
+      '  factory ${className}Item.fromJson(Map<String, dynamic> json) => _\$${className}ItemFromJson(json);',
+    );
+    buffer.writeln('}');
     buffer.writeln();
   } else {
     buffer.writeln(
@@ -171,19 +199,18 @@ String _generateDartModel(
       'String ${camelClass}ToJsonString($className data) => json.encode(data.toJson());',
     );
     buffer.writeln();
+    buffer.writeln('@freezed');
+    buffer.writeln('abstract class $className with _\$$className {');
+    buffer.writeln('  const factory $className({');
+    buffer.write(fields.toString());
+    buffer.writeln('  }) = _$className;');
+    buffer.writeln();
+    buffer.writeln(
+      '  factory $className.fromJson(Map<String, dynamic> json) => _\$${className}FromJson(json);',
+    );
+    buffer.writeln('}');
+    buffer.writeln();
   }
-
-  buffer.writeln('@freezed');
-  buffer.writeln('abstract class $className with _\$$className {');
-  buffer.writeln('  const factory $className({');
-  buffer.write(fields.toString());
-  buffer.writeln('  }) = _$className;');
-  buffer.writeln();
-  buffer.writeln(
-    '  factory $className.fromJson(Map<String, dynamic> json) => _\$${className}FromJson(json);',
-  );
-  buffer.writeln('}');
-  buffer.writeln();
 
   return buffer.toString();
 }
@@ -223,7 +250,10 @@ String _getDartType(
   if (value is double) return 'double';
   if (value is bool) return 'bool';
 
-  final parent = parentClassName ?? '';
+  String parent = parentClassName ?? '';
+  if (isList) {
+    parent = '${parent}Item';
+  }
   final baseKey = ReCase(key).pascalCase;
   final nestedClass = '$parent$baseKey';
 

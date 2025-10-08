@@ -25,3 +25,7 @@
 ## 1.0.6
 
 - Remove .dto from generated files
+
+## 1.0.7
+
+- Add Class Wrapper List Response
