@@ -24,7 +24,8 @@ void main(List<String> arguments) async {
     }
     if (files.length > 1) {
       print(
-          '❌ Multiple files found named: $targetFile. Please specify a single file.');
+        '❌ Multiple files found named: $targetFile. Please specify a single file.',
+      );
       return;
     }
   } else {
@@ -71,21 +72,25 @@ void main(List<String> arguments) async {
     fullCode.writeln('// ignore_for_file: invalid_annotation_target');
     fullCode.writeln();
     fullCode.writeln(
-        "import 'package:freezed_annotation/freezed_annotation.dart';");
+      "import 'package:freezed_annotation/freezed_annotation.dart';",
+    );
     fullCode.writeln("import 'dart:convert';");
     fullCode.writeln();
     final fileName = ReCase(className).snakeCase;
-    fullCode.writeln("part '$fileName.dto.freezed.dart';");
-    fullCode.writeln("part '$fileName.dto.g.dart';");
+    fullCode.writeln("part '$fileName.freezed.dart';");
+    fullCode.writeln("part '$fileName.g.dart';");
     fullCode.writeln();
     fullCode.writeln(mainModelCode);
     fullCode.writeln(nestedModels.toString());
 
-    final outputPath = file.path.replaceAll('.dto.json', '.dto.dart');
+    final outputPath = file.path.replaceAll('.dto.json', '.dart');
     final outputFile = File(outputPath);
 
     if (await _shouldWriteFile(
-        outputFile, fullCode.toString(), forceOverwrite)) {
+      outputFile,
+      fullCode.toString(),
+      forceOverwrite,
+    )) {
       await outputFile.writeAsString(fullCode.toString());
       print('✅ Generated: ${outputFile.path}');
     } else {
@@ -120,36 +125,51 @@ String _generateDartModel(
   final fields = StringBuffer();
 
   jsonMap.forEach((key, value) {
-    final dartType =
-        _getDartType(value, key, outputDir, nestedModels, force, className);
+    final dartType = _getDartType(
+      value,
+      key,
+      outputDir,
+      nestedModels,
+      force,
+      className,
+    );
     final variableName = ReCase(key).camelCase;
 
     // ✅ Special handling for Lists → @Default([])
     if (dartType.startsWith('List<')) {
       fields.writeln(
-          '    @Default([]) @JsonKey(name: "$key", includeIfNull: false) $dartType $variableName,');
+        '    @Default([]) @JsonKey(name: "$key", includeIfNull: false) $dartType $variableName,',
+      );
     } else {
       fields.writeln(
-          '    @JsonKey(name: "$key", includeIfNull: false) $dartType? $variableName,');
-}
+        '    @JsonKey(name: "$key", includeIfNull: false) $dartType? $variableName,',
+      );
+    }
   });
 
   final buffer = StringBuffer();
 
   if (isListRoot) {
-    buffer.writeln('List<$className> ${camelClass}ListFromJsonString(String str) =>');
     buffer.writeln(
-        '    List<$className>.from(json.decode(str).map((x) => $className.fromJson(x)));');
+      'List<$className> ${camelClass}ListFromJsonString(String str) =>',
+    );
+    buffer.writeln(
+      '    List<$className>.from(json.decode(str).map((x) => $className.fromJson(x)));',
+    );
     buffer.writeln();
-    buffer.writeln('String ${camelClass}ListToJsonString(List<$className> data) =>');
+    buffer.writeln(
+      'String ${camelClass}ListToJsonString(List<$className> data) =>',
+    );
     buffer.writeln('    json.encode(data.map((x) => x.toJson()).toList());');
     buffer.writeln();
   } else {
     buffer.writeln(
-        '$className ${camelClass}FromJsonString(String str) => $className.fromJson(json.decode(str));');
+      '$className ${camelClass}FromJsonString(String str) => $className.fromJson(json.decode(str));',
+    );
     buffer.writeln();
     buffer.writeln(
-        'String ${camelClass}ToJsonString($className data) => json.encode(data.toJson());');
+      'String ${camelClass}ToJsonString($className data) => json.encode(data.toJson());',
+    );
     buffer.writeln();
   }
 
@@ -160,7 +180,8 @@ String _generateDartModel(
   buffer.writeln('  }) = _$className;');
   buffer.writeln();
   buffer.writeln(
-      '  factory $className.fromJson(Map<String, dynamic> json) => _\$${className}FromJson(json);');
+    '  factory $className.fromJson(Map<String, dynamic> json) => _\$${className}FromJson(json);',
+  );
   buffer.writeln('}');
   buffer.writeln();
 
@@ -176,8 +197,25 @@ String _getDartType(
   String? parentClassName,
 ]) {
   if (value is String) {
-    final parsed = DateTime.tryParse(value);
-    if (parsed != null) return 'DateTime';
+    // Define allowed datetime formats (ISO8601, date only, etc.)
+    final dateTimePatterns = [
+      RegExp(r'^\d{4}-\d{2}-\d{2}$'), // e.g. 2025-10-08
+      RegExp(
+        r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$',
+      ), // e.g. 2025-10-08T14:35:00
+      RegExp(
+        r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$',
+      ), // e.g. 2025-10-08 14:35:00
+    ];
+
+    // Check if matches one of the datetime formats
+    final matchesPattern = dateTimePatterns.any((p) => p.hasMatch(value));
+
+    if (matchesPattern) {
+      final parsed = DateTime.tryParse(value);
+      if (parsed != null) return 'DateTime';
+    }
+
     return 'String';
   }
 

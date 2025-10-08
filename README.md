@@ -16,7 +16,7 @@ CLI tool to generate Dart models from `.dto.json` files using `freezed` and `jso
 - 🧩 Supports nested objects and nested lists
 - 📆 Auto-detect `DateTime` fields
 - 🔑 Annotates with `@JsonKey(name: "...", includeIfNull: false)`
-- 📃 Output all models in the same `.dto.dart` file
+- 📃 Output all models in the same `.dart` file
 - 📚 Generates helper methods:
   - `MyModel myModelFromJson(String str)`
   - `String myModelToJson(MyModel data)`
@@ -90,7 +90,7 @@ Given a file named `user.dto.json`:
 }
 ```
 
-It generates a `user.dto.dart` file like:
+It generates a `user.dart` file like:
 
 ```dart
 @freezed

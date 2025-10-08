@@ -17,3 +17,11 @@
 ## 1.0.4
 
 - Update List to @Default([]) 
+
+## 1.0.5
+
+- Add DateTime Patterns By Islam khalil
+
+## 1.0.6
+
+- Remove .dto from generated files
