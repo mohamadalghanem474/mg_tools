@@ -5,7 +5,7 @@ import 'package:recase/recase.dart';
 var isList = false;
 void main(List<String> arguments) async {
   final directory = Directory.current;
-  final forceOverwrite = true; //arguments.contains('--replace');
+  final forceOverwrite = arguments.contains('--replace');
   final targetFile = arguments.firstWhere(
     (arg) => arg.endsWith('.dto.json'),
     orElse: () => '',
