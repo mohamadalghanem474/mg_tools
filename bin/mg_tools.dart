@@ -254,10 +254,7 @@ String _getDartType(
   if (value is double) return 'double';
   if (value is bool) return 'bool';
 
-  String parent = parentClassName ?? '';
-  if (isList) {
-    parent = '${parent}Item';
-  }
+  final parent = parentClassName ?? '';
   final baseKey = ReCase(key).pascalCase;
   final nestedClass = '$parent$baseKey';
 
