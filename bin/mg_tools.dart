@@ -152,22 +152,12 @@ String _generateDartModel(
   final buffer = StringBuffer();
 
   if (isListRoot) {
-    buffer.writeln(
-      '$className ${camelClass}FromJsonString(String str) => $className.fromJson(json.decode(str));',
-    );
     buffer.writeln();
-    buffer.writeln(
-      'String ${camelClass}ToJsonString($className data) => json.encode(data.toJson());',
-    );
-    buffer.writeln();
-    buffer.writeln('@Freezed(fromJson: false, toJson: false)');
+    buffer.writeln('@freezed');
     buffer.writeln('abstract class $className with _\$$className {');
     buffer.writeln(
-        '  const factory $className({@Default([]) List<${className}Item> items}) = _$className;');
-    buffer.writeln(
-        "  factory $className.fromJson(Map<String, dynamic> json) => $className(items: (json as List).map((e) => ${className}Item.fromJson(e)).toList());");
-    buffer.writeln(
-        "  List<Map<String, dynamic>> toJson() => items.map((e) => e.toJson()).toList();");
+        '  const factory $className({@Default([]) List<${className}Item> items,');
+    buffer.writeln("}) = _$className;");
     buffer.writeln('}');
     buffer.writeln();
     buffer.writeln(
@@ -208,9 +198,16 @@ String _generateDartModel(
     buffer.writeln();
     buffer.writeln('@freezed');
     buffer.writeln('abstract class $className with _\$$className {');
-    buffer.writeln('  const factory $className({');
+    buffer.write('  const factory $className(');
+    if (fields.isNotEmpty) {
+      buffer.write('{');
+      buffer.writeln('');
+    }
     buffer.write(fields.toString());
-    buffer.writeln('  }) = _$className;');
+    if (fields.isNotEmpty) {
+      buffer.write('}');
+    }
+    buffer.writeln(') = _$className;');
     buffer.writeln();
     buffer.writeln(
       '  factory $className.fromJson(Map<String, dynamic> json) => _\$${className}FromJson(json);',

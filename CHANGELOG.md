@@ -33,3 +33,7 @@
 ## 1.0.8
 
 - remove {} from constracter freezed dart file if null empty json *.dto.json
+
+## 1.0.10
+
+- handel [] from json to list
