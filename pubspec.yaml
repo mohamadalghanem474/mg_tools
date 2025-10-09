@@ -1,6 +1,6 @@
 name: mg_tools
 description: A Dart CLI tool to generate Freezed & JsonSerializable models from .dto.json files, with nested support and auto DateTime detection.
-version: 1.0.12
+version: 1.0.13
 repository: https://github.com/mohamadalghanem474/mg_tools
 
 environment:
