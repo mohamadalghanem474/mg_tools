@@ -181,9 +181,16 @@ String _generateDartModel(
     buffer.writeln('@freezed');
     buffer
         .writeln('abstract class ${className}Item with _\$${className}Item {');
-    buffer.writeln('  const factory ${className}Item({');
+    buffer.write('  const factory ${className}Item(');
+    if (fields.isNotEmpty) {
+      buffer.write('{');
+      buffer.writeln('');
+    }
     buffer.write(fields.toString());
-    buffer.writeln('  }) = _${className}Item;');
+    if (fields.isNotEmpty) {
+      buffer.write('}');
+    }
+    buffer.writeln('  ) = _${className}Item;');
     buffer.writeln();
     buffer.writeln(
       '  factory ${className}Item.fromJson(Map<String, dynamic> json) => _\$${className}ItemFromJson(json);',

@@ -29,3 +29,7 @@
 ## 1.0.7
 
 - Add Class Wrapper List Response
+
+## 1.0.8
+
+- remove {} from constracter freezed dart file if null empty json *.dto.json
