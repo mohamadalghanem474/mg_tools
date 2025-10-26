@@ -19,5 +19,5 @@ executables:
   mg_tools: mg_tools
 
 screenshots:
-  description: A screenshot of the CLI tool's logo.
-  path: screenshots/logo.png
+  - description: The mg_tools package logo.
+    path: screenshots/logo.png
