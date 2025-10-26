@@ -4,7 +4,7 @@ homepage: https://github.com/mohamadalghanem474/mg_tools
 repository: https://github.com/mohamadalghanem474/mg_tools
 issue_tracker: https://github.com/mohamadalghanem474/mg_tools/issues
 documentation: https://github.com/mohamadalghanem474/mg_tools#readme
-version: 1.0.14
+version: 1.0.15
 
 environment:
   sdk: ^3.6.2

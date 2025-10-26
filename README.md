@@ -112,15 +112,6 @@ class User with _$User {
 
 ## 💡 Tips
 
-- After generating your models, run:
-
-```bash
-dart run build_runner build --delete-conflicting-outputs
-```
-
----
-
-
 ## 📣 Contribute
 
 Feel free to open an issue or submit a PR with improvements, features, or bug fixes 🚀

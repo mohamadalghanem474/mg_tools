@@ -46,9 +46,7 @@ void main(List<String> arguments) async {
 
     if (rawDecoded is Map<String, dynamic>) {
       decoded = rawDecoded;
-    } else if (rawDecoded is List &&
-        rawDecoded.isNotEmpty &&
-        rawDecoded.first is Map<String, dynamic>) {
+    } else if (rawDecoded is List && rawDecoded.isNotEmpty && rawDecoded.first is Map<String, dynamic>) {
       decoded = Map<String, dynamic>.from(rawDecoded.first);
       isListRoot = true;
       isList = true;
@@ -99,7 +97,10 @@ void main(List<String> arguments) async {
       print('⏭️  Skipped: ${outputFile.path}');
     }
   }
-
+  print('⏳ Running build_runner...');
+  await Process.run('dart', ['run', 'build_runner', 'build', '--delete-conflicting-outputs']);
+  print('⏳ Formatting...');
+  await Process.run("dart", ['format', '.']);
   print('🎉 Done.');
 }
 
@@ -155,8 +156,7 @@ String _generateDartModel(
     buffer.writeln();
     buffer.writeln('@freezed');
     buffer.writeln('abstract class $className with _\$$className {');
-    buffer.writeln(
-        '  const factory $className({@Default([]) List<${className}Item> items,');
+    buffer.writeln('  const factory $className({@Default([]) List<${className}Item> items,');
     buffer.writeln("}) = _$className;");
     buffer.writeln('}');
     buffer.writeln();
@@ -169,8 +169,7 @@ String _generateDartModel(
     );
     buffer.writeln();
     buffer.writeln('@freezed');
-    buffer
-        .writeln('abstract class ${className}Item with _\$${className}Item {');
+    buffer.writeln('abstract class ${className}Item with _\$${className}Item {');
     buffer.write('  const factory ${className}Item(');
     if (fields.isNotEmpty) {
       buffer.write('{');
