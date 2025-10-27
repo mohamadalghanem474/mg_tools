@@ -100,8 +100,10 @@ void main(List<String> arguments) async {
   }
   print('✅ Generated $generatedFilesCount files');
   print('⏭️  Skipped: $skippedFilesCount files');
-  print('⏳ Running build_runner...');
-  await Process.run('dart', ['run', 'build_runner', 'build', '--delete-conflicting-outputs']);
+  if (generatedFilesCount > 0) {
+    print('⏳ Running build_runner...');
+    await Process.run('dart', ['run', 'build_runner', 'build', '--delete-conflicting-outputs']);
+  }
   print('🎉 Done.');
 }
 
