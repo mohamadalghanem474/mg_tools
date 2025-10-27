@@ -36,7 +36,8 @@ void main(List<String> arguments) async {
       }
     }
   }
-
+  int generatedFilesCount = 0;
+  int skippedFilesCount = 0;
   for (final file in files) {
     final jsonContent = await file.readAsString();
 
@@ -92,15 +93,15 @@ void main(List<String> arguments) async {
       forceOverwrite,
     )) {
       await outputFile.writeAsString(fullCode.toString());
-      print('✅ Generated: ${outputFile.path}');
+      generatedFilesCount++;
     } else {
-      print('⏭️  Skipped: ${outputFile.path}');
+      skippedFilesCount++;
     }
   }
+  print('✅ Generated $generatedFilesCount files');
+  print('⏭️  Skipped: $skippedFilesCount files');
   print('⏳ Running build_runner...');
   await Process.run('dart', ['run', 'build_runner', 'build', '--delete-conflicting-outputs']);
-  print('⏳ Formatting...');
-  await Process.run("dart", ['format', '.']);
   print('🎉 Done.');
 }
 

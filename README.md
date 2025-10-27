@@ -1,10 +1,11 @@
 # 🛠 mg_tools
+
 [![Pub Version](https://img.shields.io/pub/v/mg_tools.svg)](https://pub.dev/packages/mg_tools)
 ![Null Safety](https://img.shields.io/badge/null_safety-%E2%9C%85-green)
 [![GitHub Stars](https://img.shields.io/github/stars/mohamadalghanem474/mg_tools?style=social)](https://github.com/mohamadalghanem474/mg_tools)
 
 ---
-CLI tool to generate Dart models from `.dto.json` files using `freezed` and `json_serializable`.
+Tool to generate Dart models from `.dto.json` files using `freezed` and `json_serializable`.
 
 ---
 
@@ -28,18 +29,19 @@ CLI tool to generate Dart models from `.dto.json` files using `freezed` and `jso
 ---
 
 ## 🧰 Getting started
+
 - Make sure you have the following dev dependencies in your `pubspec.yaml`:
+
 ```yaml
 dependencies:
-  freezed_annotation: ^3.0.0
-  json_annotation: ^4.9.0
-```
-```yaml
+  freezed_annotation:
+  json_annotation:
+
 dev_dependencies:
-  mg_tools: ^1.0.3
-  build_runner: ^2.4.15
-  freezed: ^3.0.6
-  json_serializable: ^6.9.5
+  mg_tools:
+  build_runner:
+  freezed:
+  json_serializable:
 ```
 
 Then run:
@@ -47,26 +49,31 @@ Then run:
 ```bash
 dart pub get
 ```
+
 ---
 
 ## ⚙️ Usage
 
-### ✅ Generate models from all `.dto.json` files:
+### ✅ Generate models from all `.dto.json` files
+
 ```bash
 dart run mg_tools
 ```
 
-### 🔁 Force replace existing generated files:
+### 🔁 Force replace existing generated files
+
 ```bash
 dart run mg_tools --replace
 ```
 
-### 🎯 Generate model from a single file:
+### 🎯 Generate model from a single file
+
 ```bash
 dart run mg_tools user.dto.json
 ```
 
-### 🎯 + 🔁 Replace single file if it exists:
+### 🎯 + 🔁 Replace single file if it exists
+
 ```bash
 dart run mg_tools user.dto.json --replace
 ```
